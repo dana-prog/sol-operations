@@ -49,7 +49,7 @@ const _customerProps = {
     width: 320,
   },
   normalizeFieldValues: normalizeCustomerFieldValues,
-  validateFieldValues: validateCustomerFieldValues,
+  validateValues: validateCustomerFieldValues,
 };
 
 addTypeProps(_customerProps);
@@ -62,7 +62,7 @@ function validateCustomerFieldValues(valuesMapByFieldName, rowNum) {
   const whatsappField = fields.whatsapp;
   const whatsappValue = valuesMapByFieldName[whatsappField.name];
 
-  const rowNums = SOLLibrary.findRows(_customerProps.sheetName, whatsappField.columnHeader, whatsappValue);
+  const rowNums = SOLLibrary.getRowNumbers(_customerProps.sheetName, whatsappField.columnHeader, whatsappValue);
   const duplicateRowNum = rowNums.find(r => r !== rowNum);
 
   if (duplicateRowNum) {

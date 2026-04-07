@@ -12,7 +12,7 @@ function testDate() {
 // function _selectRowByValues(typeName, values) {
 //   const typeProps = getTypeProp(typeName);
 //   const uniqueField = getUniqueField(typeName);
-//   const rowNum = SOLLibrary.findRows(
+//   const rowNum = SOLLibrary.getRowNumbers(
 //     sheet,
 //     uniqueField.columnHeader,
 //     values[uniqueField.columnHeader])[0];

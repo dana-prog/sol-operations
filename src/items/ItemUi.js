@@ -8,7 +8,7 @@ function showNewItemDialog() {
 function showEditItemDialog() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const typeName = getTypePropsBySheetName(sheet.getName()).name;
-  const rowNum = SOLLibrary.getSelectedRow(sheet);
+  const rowNum = SOLLibrary.getSelectedRow(sheet.getName());
 
   showItemDialog(typeName, rowNum);
 }
@@ -16,7 +16,7 @@ function showEditItemDialog() {
 function showItemDialog(typeName, rowNum) {
   const typeProps = getTypeProps(typeName);
   const dialogProps = typeProps.itemDialog;
-  const initialData = rowNum ? getItemValues(typeName, rowNum) : null;
+  const initialData = rowNum ? getItem(typeName, rowNum) : null;
   const fields = Object.values(typeProps.fields).filter(field => field.showInForm);
 
   const template = HtmlService.createTemplateFromFile(`html/item_form.tmpl`);

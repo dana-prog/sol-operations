@@ -67,8 +67,8 @@
   }
 
   function submitForm() {
-    const data = getFormInputValues();
-    if (!validateRequiredFields(data)) return;
+    const values = getFormInputValues();
+    if (!validateRequiredFields(values)) return;
 
     setLoading(true);
 
@@ -78,11 +78,11 @@
         google.script.host.close();
       })
       .withFailureHandler(handleError)
-      .saveItem(
-        window.formConfig.typeName,
-        data,
-        window.formConfig.rowNum
-      );
+      .saveItem({
+          typeName: window.formConfig.typeName,
+          values,
+          rowNum: window.formConfig.rowNum
+      });
   }
 
   function setLoading(isLoading) {

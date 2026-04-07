@@ -5,8 +5,8 @@ function createMenu() {
     .createMenu('SOL')
     .addItem('Create Invoices', '_onCreateInvoicesItemClicked')
     .addItem('Sync Invoices', '_onSyncInvoicesItemClicked')
-    .addSeparator()
-    .addItem('Toggle Log Alerts', '_onToggleLogAlertsItemClicked')
+    // .addSeparator()
+    // .addItem('Toggle Log Alerts', '_onToggleLogAlertsItemClicked')
     .addToUi();
 }
 
