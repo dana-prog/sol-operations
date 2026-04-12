@@ -78,11 +78,11 @@ function _getUnprocessedIncomes() {
   const allRows = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
   const allIncomes = allRows.map(row => SOLLibrary.arrayToObj(row, headerMap));
 
-  // sort by date ascending (oldest first) for sequential processing
+  // sort by id ascending (oldest first) for sequential processing
   allIncomes.sort((a, b) => {
-    const dateA = a['date'] instanceof Date ? a['date'].getTime() : 0;
-    const dateB = b['date'] instanceof Date ? b['date'].getTime() : 0;
-    return dateA - dateB;
+    const idA = typeof a['id'] === 'number' ? a['id'] : 0;
+    const idB = typeof b['id'] === 'number' ? b['id'] : 0;
+    return idA - idB;
   });
 
   const res = [];
