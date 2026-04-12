@@ -32,9 +32,10 @@ function syncInvoices() {
     return;
   }
 
+  const sheet = _getInvoicesSheet();
   const sheetName = _invoiceProps.sheetName;
   const rows = SOLLibrary.generateSheetRows(sheetName, docs);
-  SOLLibrary.appendRowsToSheet(sheetName, rows);
+  SOLLibrary.appendRowsToSheet(sheet, rows);
   SOLLibrary.sortSheet(sheetName, 'DocumentNumber', false);
   SOLLibrary.alert('Invoices synced', `${docs.length} invoices were synced from Sumit:\n\n` + docs.map(doc => doc['DocumentNumber']).join('\n'));
 }
