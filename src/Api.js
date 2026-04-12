@@ -4,19 +4,22 @@
  * Usage:
  *   GET <deployUrl>?sheet=Customers
  *   GET <deployUrl>?sheet=Customers&limit=10
- *   GET <deployUrl>                         → lists available sheets
+ *   GET <deployUrl>?sheet=Customers&formulas=true  → formulas instead of values
+ *   GET <deployUrl>                                → lists available sheets
  *
  * Deploy: Publish → Deploy as web app → Execute as "Me", access "Anyone".
  */
 function doGet(e) {
-  const sheetName = (e.parameter || {}).sheet;
-  const limit = parseInt((e.parameter || {}).limit, 10) || 0;
+  const params = e.parameter || {};
+  const sheetName = params.sheet;
+  const limit = parseInt(params.limit, 10) || 0;
+  const formulas = params.formulas === 'true';
 
   if (!sheetName) {
     return _jsonResponse(_listSheets());
   }
 
-  return _jsonResponse(_getSheetData(sheetName, limit));
+  return _jsonResponse(_getSheetData(sheetName, limit, formulas));
 }
 
 function _listSheets() {
@@ -30,7 +33,7 @@ function _listSheets() {
   };
 }
 
-function _getSheetData(sheetName, limit) {
+function _getSheetData(sheetName, limit, formulas) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName(sheetName);
   if (!sheet) {
@@ -52,15 +55,24 @@ function _getSheetData(sheetName, limit) {
   }
 
   const rowCount = limit > 0 ? Math.min(limit, dataRowCount) : dataRowCount;
-  const values = sheet.getRange(2, 1, rowCount, lastCol).getValues();
+  const range = sheet.getRange(2, 1, rowCount, lastCol);
+  const values = range.getValues();
+  const formulaGrid = formulas ? range.getFormulas() : null;
 
-  const rows = values.map(row => {
+  const rows = values.map((row, rowIdx) => {
     const obj = {};
     for (let col = 0; col < headers.length; col++) {
       const val = row[col];
-      obj[headers[col]] = val instanceof Date
-        ? Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd')
-        : val;
+      const formula = formulaGrid ? formulaGrid[rowIdx][col] : '';
+      if (formula) {
+        obj[headers[col]] = { value: val instanceof Date
+          ? Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd')
+          : val, formula };
+      } else {
+        obj[headers[col]] = val instanceof Date
+          ? Utilities.formatDate(val, Session.getScriptTimeZone(), 'yyyy-MM-dd')
+          : val;
+      }
     }
     return obj;
   });
