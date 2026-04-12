@@ -1,6 +1,6 @@
 const SUMIT_LIST_DOCUMENTS_API = "https://api.sumit.co.il/accounting/documents/list/";
 const SUMIT_CREATE_DOCUMENT_API = "https://api.sumit.co.il/accounting/documents/create/";
-const SUMIT_DRAFT_MODE = false;
+const SUMIT_DRAFT_MODE = true;
 
 function getSumitCredentials() {
   const props = PropertiesService.getScriptProperties();
