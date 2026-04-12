@@ -9,7 +9,7 @@ const _incomeProps = {
  * @param rowNum the row number of the inserted row (1-based index)
  */
 function onIncomesSheetInsertRow(rowNum){
-  const idColNum = SOLLibrary.getColNumByHeader(_incomeProps.sheetName, "Id");
+  const idColNum = SOLLibrary.getColNumByHeader(_incomeProps.sheetName, "id");
   const nextId = _getNextId();
 
   _getIncomesSheet().getRange(rowNum, idColNum).setValue(nextId);
@@ -25,8 +25,8 @@ function createInvoices() {
   for (const income of unprocessedIncomes) {
     const bankTransactionId = income['bankTransactionId'];
     const date = Utilities.formatDate(income['date'], Session.getScriptTimeZone(), "yyyy-MM-dd'T'HH:mm:ss");
-    const name = income['nameForInvoice'] || income['customer'];
-    const product = income['product'];
+    const name = income['nameOnInvoice'] || income['customerName'];
+    const product = income['productName'];
     const amount = income['amount'];
 
     try {
@@ -63,9 +63,9 @@ function _getIncomesSheet() {
 function _getUnprocessedIncomes() {
   const sheetName = _incomeProps.sheetName;
   const sheet = SOLLibrary.getSheet(sheetName);
-  SOLLibrary.sortSheet(sheetName, 'Date');
+  SOLLibrary.sortSheet(sheetName, 'date');
   const headerMap = SOLLibrary.getHeaderMap(sheetName);
-  const invoiceIds = SOLLibrary.getColumnValues(sheetName, 'Invoice Id', false);
+  const invoiceIds = SOLLibrary.getColumnValues(sheetName, 'invoice id', false);
   // find the index of 1st row with an invoice id - all the rows before it are not processed yet
   const unprocessedRowsCount = invoiceIds.findIndex(value => typeof value === 'number');
 
@@ -105,6 +105,6 @@ function buildInvoiceResultsMessage(results) {
 }
 
 function _getNextId() {
-  const ids = SOLLibrary.getColumnValues(_incomeProps.sheetName, "Id", false);
+  const ids = SOLLibrary.getColumnValues(_incomeProps.sheetName, "id", false);
   return ids.length ? Math.max(...ids) + 1 : 1;
 }
