@@ -56,44 +56,52 @@ function _getIncomesSheet() {
 }
 
 /**
- * Returns an array of objects for all the rows which do not have an associated
- * @returns {*[]}
+ * Returns unprocessed bank-transfer incomes sorted oldest-first, ready for
+ * invoice creation. Reads all data in memory — does not modify the sheet.
+ *
+ * An income is "unprocessed" when its invoice id cell is not a number
+ * (empty or a marker like "<Cash>"). Cash payments are skipped.
+ * Processing stops at the first bank transfer without a bank transaction id
+ * to preserve date-sequential receipt ordering.
+ *
+ * @returns {Object[]} Incomes to invoice, oldest first.
  * @private
  */
 function _getUnprocessedIncomes() {
-  const sheetName = _incomeProps.sheetName;
-  const sheet = SOLLibrary.getSheet(sheetName);
-  SOLLibrary.sortSheet(sheetName, 'date');
+  const sheet = _getIncomesSheet();
   const headerMap = SOLLibrary.getHeaderMap(sheet);
-  const invoiceIds = SOLLibrary.getColumnValues(sheetName, 'invoice id', false);
-  // find the index of 1st row with an invoice id - all the rows before it are not processed yet
-  const unprocessedRowsCount = invoiceIds.findIndex(value => typeof value === 'number');
+  const lastRow = sheet.getLastRow();
+  const lastCol = sheet.getLastColumn();
 
-  // get all the rows from the recent income (row 2) until the first income that was not processed
-  const rows = sheet.getRange(2, 1, unprocessedRowsCount, sheet.getLastColumn()).getValues();
+  if (lastRow < 2) return [];
+
+  const allRows = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+  const allIncomes = allRows.map(row => SOLLibrary.arrayToObj(row, headerMap));
+
+  // sort by date ascending (oldest first) for sequential processing
+  allIncomes.sort((a, b) => {
+    const dateA = a['date'] instanceof Date ? a['date'].getTime() : 0;
+    const dateB = b['date'] instanceof Date ? b['date'].getTime() : 0;
+    return dateA - dateB;
+  });
 
   const res = [];
 
-  // iterate unprocessed rows
-  for (let rowIndex = unprocessedRowsCount - 1; rowIndex >= 0; rowIndex--) {
-    const row = rows[rowIndex];
-    const obj = SOLLibrary.arrayToObj(row, headerMap);
+  for (const income of allIncomes) {
+    // already has an invoice — skip
+    if (typeof income['invoiceId'] === 'number') continue;
 
-    // generate invoice only for bank transfers
-    if (obj['paymentMethod'] !== 'Bank Transfer') {
-      continue;
-    }
+    // only bank transfers get invoices
+    if (income['paymentMethod'] !== 'Bank Transfer') continue;
 
-    if (!obj['bankTransactionId']) {
-      // the current income was not matched with a bank transaction id and therefore it is not possible to generate an invoice for it - stop processing
-      const msg = `Income '${obj['id']}' has no related Bank Transaction Id - no invoice will be created for this and later incomes.`;
+    if (!income['bankTransactionId']) {
+      const msg = `Income '${income['id']}' has no related Bank Transaction Id - no invoice will be created for this and later incomes.`;
       SOLLibrary.log('Sumit', 'getUnprocessedIncomes', msg);
       SOLLibrary.alert('No Bank Transaction ID', msg);
       break;
     }
 
-    // add the current income row to the result
-    res.push(obj);
+    res.push(income);
   }
 
   return res;
