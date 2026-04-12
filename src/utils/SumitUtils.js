@@ -54,7 +54,7 @@ function createInvoice(bankTransferId, date, name, productName, amount) {
 function listNewSumitDocs(lastSyncedDocNumber) {
   const payload = {
     Credentials: getSumitCredentials(),
-    IncludeDrafts: SUMIT_DRAFT_MODE,
+    IncludeDrafts: true,
     DocumentTypes: ['InvoiceAndReceipt'],
     DocumentNumberFrom: lastSyncedDocNumber + 1,
     // TODO: implement real paging (or at least an error when page size is not enough)
