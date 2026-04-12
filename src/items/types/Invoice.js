@@ -35,7 +35,9 @@ function syncInvoices() {
   const sheet = _getInvoicesSheet();
   const sheetName = _invoiceProps.sheetName;
   const rows = SOLLibrary.generateSheetRows(sheetName, docs);
-  SOLLibrary.appendRowsToSheet(sheet, rows);
+  const lastRow = sheet.getLastRow();
+  const lastCol = sheet.getLastColumn();
+  sheet.getRange(lastRow + 1, 1, rows.length, lastCol).setValues(rows);
   SOLLibrary.sortSheet(sheetName, 'DocumentNumber', false);
   SOLLibrary.alert('Invoices synced', `${docs.length} invoices were synced from Sumit:\n\n` + docs.map(doc => doc['DocumentNumber']).join('\n'));
 }
