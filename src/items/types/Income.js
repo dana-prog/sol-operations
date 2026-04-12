@@ -9,7 +9,7 @@ const _incomeProps = {
  * @param rowNum the row number of the inserted row (1-based index)
  */
 function onIncomesSheetInsertRow(rowNum){
-  const idColNum = SOLLibrary.getColNumByHeader(_incomeProps.sheetName, "id");
+  const idColNum = SOLLibrary.getColNumByHeader(_getIncomesSheet(), "id");
   const nextId = _getNextId();
 
   _getIncomesSheet().getRange(rowNum, idColNum).setValue(nextId);
@@ -64,7 +64,7 @@ function _getUnprocessedIncomes() {
   const sheetName = _incomeProps.sheetName;
   const sheet = SOLLibrary.getSheet(sheetName);
   SOLLibrary.sortSheet(sheetName, 'date');
-  const headerMap = SOLLibrary.getHeaderMap(sheetName);
+  const headerMap = SOLLibrary.getHeaderMap(sheet);
   const invoiceIds = SOLLibrary.getColumnValues(sheetName, 'invoice id', false);
   // find the index of 1st row with an invoice id - all the rows before it are not processed yet
   const unprocessedRowsCount = invoiceIds.findIndex(value => typeof value === 'number');
