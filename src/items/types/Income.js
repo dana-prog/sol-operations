@@ -3,8 +3,6 @@ const _incomeProps = {
   name: 'income',
 };
 
-addTypeProps(_incomeProps);
-
 /**
  * Called when a new row is inserted to the Incomes sheet.
  * Assigns the next available id to the inserted row

@@ -12,7 +12,7 @@ function createMenu() {
 
 function _onCreateInvoicesItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  const expected = getTypeProps('income').sheetName;
+  const expected = _incomeProps.sheetName;
   if (sheet.getName() !== expected) {
     SOLLibrary.alert('Not supported sheet', `Creating invoices is only supported in the '${expected}' sheet.`);
     return;
@@ -24,7 +24,7 @@ function _onCreateInvoicesItemClicked() {
 
 function _onSyncInvoicesItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  const expected = getTypeProps('invoice').sheetName;
+  const expected = _invoiceProps.sheetName;
   if (sheet.getName() !== expected) {
     SOLLibrary.alert('Not supported sheet', `Syncing invoices is only supported in the '${expected}' sheet.`);
     return;

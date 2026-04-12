@@ -3,8 +3,6 @@ const _invoiceProps = {
   name: 'invoice',
 };
 
-addTypeProps(_invoiceProps);
-
 const _HEADER_ROW = [
   'IsDraft',
   'Date',
