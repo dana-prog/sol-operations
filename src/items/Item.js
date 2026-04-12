@@ -32,11 +32,10 @@ function _updateItem(item) {
   const row = _generateRowValues(item);
   _getItemRowRange(item.typeName, item.rowNum).setValues([row]);
 
-  SOLLibrary.selectRow(sheetName, rowNum);
+  SOLLibrary.selectRow(sheetName, item.rowNum);
   SOLLibrary.logArgs('Item', '_updateItem', {
-      typeName,
-      rowNum,
-      newValuesMapByFieldName,
+      typeName: item.typeName,
+      rowNum: item.rowNum,
     });
 }
 
@@ -64,13 +63,9 @@ function getItem(typeName, rowNum) {
   );
 }
 
-function _formatFieldValues() {
-
-}
-
 function getItems(typeName, fieldName, fieldValue) {
   const typeProps = getTypeProps(typeName);
-  SOLLibrary.getRowNumbers(typeProps.sheetName, fieldName, fieldValue);
+  return SOLLibrary.getRowNumbers(typeProps.sheetName, fieldName, fieldValue);
 }
 
 function getTypeSheet(typeName) {

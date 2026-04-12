@@ -14,7 +14,7 @@ function onIncomesSheetInsertRow(rowNum){
   const idColNum = SOLLibrary.getColNumByHeader(_incomeProps.sheetName, "Id");
   const nextId = _getNextId();
 
-  sheet.getRange(rowNum, idColNum).setValue(nextId);
+  _getIncomesSheet().getRange(rowNum, idColNum).setValue(nextId);
 }
 
 /**

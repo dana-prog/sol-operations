@@ -6,14 +6,15 @@ function createMenu() {
     .addItem('Create Invoices', '_onCreateInvoicesItemClicked')
     .addItem('Sync Invoices', '_onSyncInvoicesItemClicked')
     // .addSeparator()
-    // .addItem('Toggle Log Alerts', '_onToggleLogAlertsItemClicked')
+    // .addItem('Toggle Write To Log File', '_onToggleWriteToLogFileClicked')
     .addToUi();
 }
 
 function _onCreateInvoicesItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  if (sheet.getName() !== INCOMES_SHEET_NAME) {
-    SOLLibrary.alert('Not supported sheet', `Creating invoices is only supported in the '${INCOMES_SHEET_NAME}' sheet.`);
+  const expected = getTypeProps('income').sheetName;
+  if (sheet.getName() !== expected) {
+    SOLLibrary.alert('Not supported sheet', `Creating invoices is only supported in the '${expected}' sheet.`);
     return;
   }
 
@@ -23,11 +24,15 @@ function _onCreateInvoicesItemClicked() {
 
 function _onSyncInvoicesItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  if (sheet.getName() !== INVOICES_SHEET_NAME) {
-    SOLLibrary.alert('Not supported sheet', `Syncing invoices is only supported in the '${INVOICES_SHEET_NAME}' sheet.`);
+  const expected = getTypeProps('invoice').sheetName;
+  if (sheet.getName() !== expected) {
+    SOLLibrary.alert('Not supported sheet', `Syncing invoices is only supported in the '${expected}' sheet.`);
+    return;
   }
+
+  syncInvoices();
 }
 
-function _onToggleLogAlertsItemClicked() {
-  SOLLibrary.toggleAlertLogs();
+function _onToggleWriteToLogFileClicked() {
+  SOLLibrary.toggleWriteToLogFile();
 }

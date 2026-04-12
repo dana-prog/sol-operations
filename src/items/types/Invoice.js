@@ -42,7 +42,7 @@ function syncInvoices() {
 }
 
 function _getLastSyncedDocNumber() {
-  const docNumbers = SOLLibrary.getColumnValues(_getInvoicesSheet(), "DocumentNumber", false);
+  const docNumbers = SOLLibrary.getColumnValues(_invoiceProps.sheetName, "DocumentNumber", false);
   return docNumbers.length ? Math.max(...docNumbers) : 0;
 }
 

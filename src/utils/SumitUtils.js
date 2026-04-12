@@ -42,12 +42,12 @@ function createInvoice(bankTransferId, date, name, productName, amount) {
     Credentials: getSumitCredentials()
   };
 
-  const response = post(SUMIT_CREATE_DOCUMENT_API, payload);
+  const response = SOLLibrary.post(SUMIT_CREATE_DOCUMENT_API, payload);
   if (response['Status'] !== 0) {
     throw new Error(`Failed to create invoice: ${response['UserErrorMessage'] || response['TechnicalErrorDetails']}`);
   }
 
-  logArgs('Sumit', 'createInvoice', {data: response['Data']});
+  SOLLibrary.logArgs('Sumit', 'createInvoice', {data: response['Data']});
   return response['Data'];
 }
 
@@ -61,5 +61,5 @@ function listNewSumitDocs(lastSyncedDocNumber) {
     Paging: {PageSize: 1000},
   };
 
-  return post(SUMIT_LIST_DOCUMENTS_API, payload);
+  return SOLLibrary.post(SUMIT_LIST_DOCUMENTS_API, payload);
 }

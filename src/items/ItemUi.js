@@ -1,16 +1,24 @@
 function showNewItemDialog() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  const typeName = getTypePropsBySheetName(sheet.getName()).name;
+  const typeProps = getTypePropsBySheetName(sheet.getName());
+  if (!typeProps) {
+    SOLLibrary.alert('Error', `No item type configured for sheet '${sheet.getName()}'.`);
+    return;
+  }
 
-  showItemDialog(typeName);
+  showItemDialog(typeProps.name);
 }
 
 function showEditItemDialog() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  const typeName = getTypePropsBySheetName(sheet.getName()).name;
-  const rowNum = SOLLibrary.getSelectedRow(sheet.getName());
+  const typeProps = getTypePropsBySheetName(sheet.getName());
+  if (!typeProps) {
+    SOLLibrary.alert('Error', `No item type configured for sheet '${sheet.getName()}'.`);
+    return;
+  }
 
-  showItemDialog(typeName, rowNum);
+  const rowNum = SOLLibrary.getSelectedRow(sheet.getName());
+  showItemDialog(typeProps.name, rowNum);
 }
 
 function showItemDialog(typeName, rowNum) {
