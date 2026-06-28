@@ -6,7 +6,7 @@ This file provides guidance to Claude Code when working with this repository.
 
 ## Project
 
-SOL Operations — a Google Apps Script project managing customers, events, incomes, and invoices through a Google Sheets spreadsheet. Integrates with Sumit accounting software for invoice generation.
+SOL Operations — a Google Apps Script project managing customers, events, payments, and invoices through a Google Sheets spreadsheet. Integrates with Sumit accounting software for invoice generation.
 
 ---
 
@@ -42,7 +42,7 @@ src/
 - Row 2: Template row — new rows copy formatting and formulas from here
 - Rows 3+: Data rows
 
-Item types map to sheets: Customers, Events, Incomes, Invoices.
+Item types map to sheets: Customers, Events, Payments, Invoices.
 
 ---
 
@@ -95,9 +95,9 @@ Uses `SOLLibrary` (Google Apps Script library, development mode):
 5. Formatting copied from row 2 template
 
 **Create invoices:**
-1. Menu → "Create Invoices" (from Incomes sheet)
-2. Finds unprocessed income rows (no invoice ID, bank transfer, has bank transaction ID)
-3. Calls Sumit API per income
+1. Menu → "Create Invoices" (from Payments sheet)
+2. Finds unprocessed payment rows (no invoice ID, bank transfer, has bank transaction ID)
+3. Calls Sumit API per payment
 4. Syncs invoices back from Sumit
 
 ---

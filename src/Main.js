@@ -13,8 +13,8 @@ function onOpen() {
  * @param newRowNum the row number of the inserted row (1-based index).
  */
 function onNewRow(sheet, newRowNum) {
-  if (isIncomesSheet(sheet)) {
-    onIncomesSheetInsertRow(newRowNum);
+  if (isPaymentsSheet(sheet)) {
+    onPaymentsSheetInsertRow(newRowNum);
   }
 }
 

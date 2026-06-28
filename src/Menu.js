@@ -12,7 +12,7 @@ function createMenu() {
 
 function _onCreateInvoicesItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
-  const expected = _incomeProps.sheetName;
+  const expected = _paymentProps.sheetName;
 
   createInvoices();
   syncInvoices();
