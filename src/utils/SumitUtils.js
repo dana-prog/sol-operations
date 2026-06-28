@@ -1,6 +1,6 @@
 const SUMIT_LIST_DOCUMENTS_API = "https://api.sumit.co.il/accounting/documents/list/";
 const SUMIT_CREATE_DOCUMENT_API = "https://api.sumit.co.il/accounting/documents/create/";
-const SUMIT_DRAFT_MODE = false;
+const SUMIT_DRAFT_MODE = true;
 
 function getSumitCredentials() {
   const props = PropertiesService.getScriptProperties();
@@ -10,7 +10,7 @@ function getSumitCredentials() {
   };
 }
 
-function createInvoice(bankTransferId, date, name, productName, amount) {
+function createInvoice(bankTransferId, date, name, eventName, amount) {
   const payload = {
     Details: {
       IsDraft: SUMIT_DRAFT_MODE,
@@ -28,7 +28,7 @@ function createInvoice(bankTransferId, date, name, productName, amount) {
       {
         DocumentCurrency_TotalPrice: amount,
         Item: {
-          Name: productName,
+          Name: eventName,
           SearchMode: "Name"
         }
       }

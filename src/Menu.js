@@ -13,10 +13,6 @@ function createMenu() {
 function _onCreateInvoicesItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const expected = _incomeProps.sheetName;
-  if (sheet.getName() !== expected) {
-    SOLLibrary.alert('Not supported sheet', `Creating invoices is only supported in the '${expected}' sheet.`);
-    return;
-  }
 
   createInvoices();
   syncInvoices();
