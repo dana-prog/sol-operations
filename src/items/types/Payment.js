@@ -15,7 +15,7 @@ function onPaymentsSheetInsertRow(rowNum){
 /**
  * Scans the Payments sheet and creates a new receipt for each payment row that does not have an receipt.
  */
-function createSummitReceipts() {
+function generateReceiptsForPayments() {
   const unprocessedPayments = _getUnprocessedPayments();
   let results = []; // map of paymentId -> receiptId
 
