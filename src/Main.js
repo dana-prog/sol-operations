@@ -6,15 +6,8 @@ function onOpen() {
   createMenu();
 }
 
-/**
- * An event handler for a new row in a sheet.
- *
- * @param sheet the sheet where the new row was inserted.
- * @param newRowNum the row number of the inserted row (1-based index).
- */
-function onNewRow(sheet, newRowNum) {
-  if (isPaymentsSheet(sheet)) {
-    onPaymentsSheetInsertRow(newRowNum);
-  }
+// noinspection JSUnusedGlobalSymbols
+function onFormSubmit(e) {
+  const rowNum = e.range.getRow();
+  onCustomerResponseSheetInsertRow(rowNum);
 }
-

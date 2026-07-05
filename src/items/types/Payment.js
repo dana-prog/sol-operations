@@ -1,16 +1,3 @@
-PAYMENTS_SHEET_NAME = 'Payments';
-
-/**
- * Called when a new row is inserted to the Payments sheet.
- * Assigns the next available id to the inserted row
- * @param rowNum the row number of the inserted row (1-based index)
- */
-function onPaymentsSheetInsertRow(rowNum){
-  const idColNum = SOLLibrary.getColNumByHeader(_getPaymentsSheet(), "id");
-  const nextId = _getNextId();
-
-  _getPaymentsSheet().getRange(rowNum, idColNum).setValue(nextId);
-}
 
 /**
  * Scans the Payments sheet and creates a new receipt for each payment row that does not have an receipt.
@@ -42,10 +29,6 @@ function generateReceiptsForPayments() {
 
   const msg = buildReceiptResultsMessage(results);
   SOLLibrary.alert('Receipts created', msg);
-}
-
-function isPaymentsSheet(sheet) {
-  return sheet.getSheetName() === RECEIPTS_SHEET_NAME;
 }
 
 function _getPaymentsSheet() {
@@ -107,9 +90,4 @@ function _getUnprocessedPayments() {
 function buildReceiptResultsMessage(results) {
   return `${results.length} receipts were created:\n\n` +
     results.map(res => `Receipt '${res.receiptId}' for Payment '${res.paymentId}'`).join('\n');
-}
-
-function _getNextId() {
-  const ids = SOLLibrary.getColumnValues(RECEIPTS_SHEET_NAME, "id", false);
-  return ids.length ? Math.max(...ids) + 1 : 1;
 }
