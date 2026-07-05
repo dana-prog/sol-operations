@@ -10,7 +10,7 @@ function getSumitCredentials() {
   };
 }
 
-function createInvoice(bankTransferId, date, name, eventName, amount) {
+function createSummitReceipt(bankTransferId, date, name, eventName, amount) {
   const payload = {
     Details: {
       IsDraft: SUMIT_DRAFT_MODE,
@@ -21,7 +21,7 @@ function createInvoice(bankTransferId, date, name, eventName, amount) {
       },
       Language: 1, // English
       Currency: 764, // THB
-      Type: 1, // InvoiceAndReceipt
+      Type: 1, // ReceiptAndReceipt
       Description: bankTransferId
     },
     Items: [
@@ -44,19 +44,24 @@ function createInvoice(bankTransferId, date, name, eventName, amount) {
 
   const response = SOLLibrary.post(SUMIT_CREATE_DOCUMENT_API, payload);
   if (response['Status'] !== 0) {
-    throw new Error(`Failed to create invoice: ${response['UserErrorMessage'] || response['TechnicalErrorDetails']}`);
+    throw new Error(`Failed to create receipt: ${response['UserErrorMessage'] || response['TechnicalErrorDetails']}`);
   }
 
-  SOLLibrary.logArgs('Sumit', 'createInvoice', {data: response['Data']});
+  SOLLibrary.logArgs('Sumit', 'createReceipt', {data: response['Data']});
   return response['Data'];
 }
 
-function listNewSumitDocs(lastSyncedDocNumber) {
+/**
+ * Lists new receipts in Sumit accounting (all receipts since lastSyncedReceiptNumber)
+ * @param lastSyncedReceiptNumber
+ * @returns {any}
+ */
+function listNewSumitReceipts(lastSyncedReceiptNumber) {
   const payload = {
     Credentials: getSumitCredentials(),
     IncludeDrafts: true,
-    DocumentTypes: ['InvoiceAndReceipt'],
-    DocumentNumberFrom: lastSyncedDocNumber + 1,
+    DocumentTypes: ['ReceiptAndReceipt'],
+    DocumentNumberFrom: lastSyncedReceiptNumber + 1,
     // TODO: implement real paging (or at least an error when page size is not enough)
     Paging: {PageSize: 1000},
   };

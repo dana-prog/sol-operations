@@ -6,7 +6,7 @@ This file provides guidance to Claude Code when working with this repository.
 
 ## Project
 
-SOL Operations — a Google Apps Script project managing customers, events, payments, and invoices through a Google Sheets spreadsheet. Integrates with Sumit accounting software for invoice generation.
+SOL Operations — a Google Apps Script project managing customers, events, payments, and receipts through a Google Sheets spreadsheet. Integrates with Sumit accounting software for receipt generation.
 
 ---
 
@@ -42,7 +42,7 @@ src/
 - Row 2: Template row — new rows copy formatting and formulas from here
 - Rows 3+: Data rows
 
-Item types map to sheets: Customers, Events, Payments, Invoices.
+Item types map to sheets: Customers, Events, Payments, Receipts.
 
 ---
 
@@ -94,19 +94,19 @@ Uses `SOLLibrary` (Google Apps Script library, development mode):
 4. Row appended or updated in sheet
 5. Formatting copied from row 2 template
 
-**Create invoices:**
-1. Menu → "Create Invoices" (from Payments sheet)
-2. Finds unprocessed payment rows (no invoice ID, bank transfer, has bank transaction ID)
+**Create receipts:**
+1. Menu → "Create Receipts" (from Payments sheet)
+2. Finds unprocessed payment rows (no receipt ID, bank transfer, has bank transaction ID)
 3. Calls Sumit API per payment
-4. Syncs invoices back from Sumit
+4. Syncs receipts back from Sumit
 
 ---
 
 ## External Integration
 
-**Sumit API** — accounting software for invoice/receipt generation.
+**Sumit API** — accounting software for receipt/receipt generation.
 - Credentials in script properties: `summitCompanyId`, `summitPrivateApiKey`
-- Creates InvoiceAndReceipt documents (type 1)
+- Creates ReceiptAndReceipt documents (type 1)
 - Currency: THB (764), Language: English (1), Payment: Bank transfer (3)
 
 ---
