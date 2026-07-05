@@ -1,7 +1,4 @@
-const _paymentProps = {
-  sheetName: 'Payments',
-  name: 'payment',
-};
+PAYMENTS_SHEET_NAME = 'Payments';
 
 /**
  * Called when a new row is inserted to the Payments sheet.
@@ -48,11 +45,11 @@ function createInvoices() {
 }
 
 function isPaymentsSheet(sheet) {
-  return sheet.getSheetName() === _paymentProps.sheetName;
+  return sheet.getSheetName() === INVOICES_SHEET_NAME;
 }
 
 function _getPaymentsSheet() {
-  return SOLLibrary.getSheet(_paymentProps.sheetName, false);
+  return SOLLibrary.getSheet(INVOICES_SHEET_NAME, false);
 }
 
 /**
@@ -113,6 +110,6 @@ function buildInvoiceResultsMessage(results) {
 }
 
 function _getNextId() {
-  const ids = SOLLibrary.getColumnValues(_paymentProps.sheetName, "id", false);
+  const ids = SOLLibrary.getColumnValues(INVOICES_SHEET_NAME, "id", false);
   return ids.length ? Math.max(...ids) + 1 : 1;
 }

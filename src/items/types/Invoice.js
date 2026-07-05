@@ -1,7 +1,4 @@
-const _invoiceProps = {
-  sheetName: 'Invoices',
-  name: 'invoice',
-};
+const INVOICES_SHEET_NAME = 'Invoices';
 
 const _HEADER_ROW = [
   'IsDraft',
@@ -33,7 +30,7 @@ function syncInvoices() {
   }
 
   const sheet = _getInvoicesSheet();
-  const sheetName = _invoiceProps.sheetName;
+  const sheetName = INVOICES_SHEET_NAME;
   const rows = SOLLibrary.generateSheetRows(sheetName, docs);
   const lastRow = sheet.getLastRow();
   const lastCol = sheet.getLastColumn();
@@ -43,12 +40,12 @@ function syncInvoices() {
 }
 
 function _getLastSyncedDocNumber() {
-  const docNumbers = SOLLibrary.getColumnValues(_invoiceProps.sheetName, "DocumentNumber", false);
+  const docNumbers = SOLLibrary.getColumnValues(INVOICES_SHEET_NAME, "DocumentNumber", false);
   return docNumbers.length ? Math.max(...docNumbers) : 0;
 }
 
 function _getInvoicesSheet() {
-  const sheet = SOLLibrary.getSheet(_invoiceProps.sheetName, true);
+  const sheet = SOLLibrary.getSheet(INVOICES_SHEET_NAME, true);
 
   // header
   if (sheet.getLastRow() === 0) {
