@@ -14,7 +14,7 @@ function _onCreateReceiptsItemClicked() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const expected = RECEIPTS_SHEET_NAME;
 
-  createReceipts();
+  createSummitReceipts();
   syncReceipts();
 }
 
